@@ -8,7 +8,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 gpio_list = [5,6,13,16,19,20,21,26]
-gpio_dict = [5:False, 6:False, 13:False, 16:False, 19:False, 20:False, 21:False, 26:False]
+gpio_dict = {5:False, 6:False, 13:False, 16:False, 19:False, 20:False, 21:False, 26:False}
 
 for i in gpio_list:
     GPIO.setup(i, GPIO.OUT)
