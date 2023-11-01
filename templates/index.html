@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>GPIO Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>GPIO Control</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Pin Number</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for gpio in gpio_list %}
+          <tr>
+            <td>{{ gpio }}</td>
+            <td>
+              <button class="button-primary" id="state{{ gpio }}" onclick="togglePin({{ gpio }})">Off</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function togglePin(pin) {
+        var state = document.getElementById("state" + pin);
+        var currentState = state.innerHTML;
+        var newState = currentState == "Off" ? "On" : "Off";
+        fetch("/gpio/" + pin, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ state: newState })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          state.innerHTML = newState;
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+      }
+    </script>
+
+  </body>
+</html>
+
